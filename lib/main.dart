@@ -25,11 +25,14 @@ class TelaLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
-        child: const Padding(
-          padding: EdgeInsets.all(40),
-          child: Acesso(),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
+          child: const Padding(
+            padding: EdgeInsets.all(40),
+            child: Acesso(),
+          ),
         ),
       ),
     );
@@ -160,10 +163,10 @@ class _AcessoState extends State<Acesso> {
                   const Color.fromARGB(255, 75, 170, 108)),
             ),
             onPressed: () {
-              if (validarCampos(usuarioController.text, senhaController.text)) {
+              if (validarCampos(senhaController.text, usuarioController.text)) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TelaInfor()),
+                  MaterialPageRoute(builder: (context) =>  TelaInfor()),
                 );
               }
             },

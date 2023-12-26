@@ -49,80 +49,86 @@ class _CapturInformaState extends State<CapturInforma> {
             color: Colors.white,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.4,
-            child: SingleChildScrollView(
-              child: _store.informacoes != []
-                  ? Observer(
-                      builder: (_) {
-                        return Column(
-                          children: _store.informacoes
-                              .map(
-                                (info) => Container(
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              color: Colors.grey.shade400,
-                                              width: 1.0))),
-                                  child: ListTile(
-                                    title: Text(info),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(
-                                            Icons.edit,
-                                            size: 38,
-                                          ),
-                                          onPressed: () {
-                                            editarInformacao(context, info);
-                                          },
-                                        ),
-                                        IconButton(
-                                          style: const ButtonStyle(
-                                            padding: MaterialStatePropertyAll(
-                                                EdgeInsets.all(0)),
-                                            backgroundColor:
-                                                MaterialStatePropertyAll(
-                                                    Colors.red),
-                                          ),
-                                          icon: const Icon(Icons.close,
-                                              color: Colors.white),
-                                          onPressed: () {
-                                            confirmarExclusao(context, info);
-                                          },
-                                        ),
-                                      ],
-                                    ),
+            child: SingleChildScrollView(child: Observer(
+              builder: (_) {
+                return Column(
+                  children: _store.informacoes
+                      .map(
+                        (info) => Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: Colors.grey.shade400,
+                                      width: 1.0))),
+                          child: ListTile(
+                            title: Text(info.infor),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    size: 38,
                                   ),
+                                  onPressed: () {
+                                    _informacaoController.text = info.infor;
+                                    _store.botaoEditClicado();
+                                    _store.setCVPego(info.chave, info.infor);
+                                  },
                                 ),
-                              )
-                              .toList(),
-                        );
-                      },
-                    )
-                  : const Center(
-                      child: Text('Sem Registros'),
-                    ),
-            ),
+                                IconButton(
+                                  style: const ButtonStyle(
+                                    padding: MaterialStatePropertyAll(
+                                        EdgeInsets.all(0)),
+                                    backgroundColor:
+                                        MaterialStatePropertyAll(Colors.red),
+                                  ),
+                                  icon: const Icon(Icons.close,
+                                      color: Colors.white),
+                                  onPressed: () {
+                                    confirmarExclusao(
+                                        context, info.chave, _store);
+                                    _informacaoController.clear();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                );
+              },
+            )),
           ),
         ),
         const SizedBox(height: 40),
-        TextField(
-          controller: _informacaoController,
-          onChanged: _store.setInformacao,
-          onSubmitted: (_) {
-            _store.salvarInformacao();
-            _informacaoController.clear();
-          },
-          textAlign: TextAlign.center,
-          cursorColor: Colors.black,
-          decoration: const InputDecoration(
-            hintText: 'Digite seu Texto',
-            hintStyle: TextStyle(color: Colors.black),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              borderSide: BorderSide.none,
+        Observer(
+          builder: (_) => TextField(
+            controller: _informacaoController,
+            onChanged: _store.setInformacao,
+            onSubmitted: _store.isEdit
+                ? (_) {
+                    // print('Editando');
+                    _store.editarInformacao();
+                    _informacaoController.clear();
+                  }
+                : (_) {
+                    // print('Salvando');
+                    _store.salvarInformacao();
+                    _informacaoController.clear();
+                  },
+            textAlign: TextAlign.center,
+            cursorColor: Colors.black,
+            decoration: const InputDecoration(
+              hintText: 'Digite seu Texto',
+              hintStyle: TextStyle(color: Colors.black),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
         ),

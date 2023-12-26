@@ -166,7 +166,7 @@ class _AcessoState extends State<Acesso> {
               if (validarCampos(senhaController.text, usuarioController.text)) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  TelaInfor()),
+                  MaterialPageRoute(builder: (context) =>  const TelaInfor()),
                 );
               }
             },

@@ -44,9 +44,11 @@ class _CapturInformaState extends State<CapturInforma> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Card(
-          child: Container(
+          child: Container( 
             padding: const EdgeInsets.all(10),
-            color: Colors.white,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:BorderRadius.circular(50) ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.4,
             child: SingleChildScrollView(child: Observer(

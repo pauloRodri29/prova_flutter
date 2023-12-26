@@ -6,6 +6,7 @@ Future<void> confirmarExclusao(BuildContext context, String chave, final store) 
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        backgroundColor: Colors.white,
         title: const Text('Deseja Excluir?'),
         actions: [
           Row(

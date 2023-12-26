@@ -159,14 +159,14 @@ class _AcessoState extends State<Acesso> {
         ),
         TextButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                  const Color.fromARGB(255, 75, 170, 108)),
+              backgroundColor:
+                  MaterialStateProperty.all(Color.fromARGB(255, 32, 36, 33)),
             ),
             onPressed: () {
               if (validarCampos(senhaController.text, usuarioController.text)) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  const TelaInfor()),
+                  MaterialPageRoute(builder: (context) => const TelaInfor()),
                 );
               }
             },

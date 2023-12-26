@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:prova_flutter/componentes/label_site.dart';
 import 'package:prova_flutter/cores/cores.dart';
+import 'package:prova_flutter/store/login.dart';
 import 'package:prova_flutter/tela_informacoes.dart';
 
 void main() {
@@ -12,6 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //7878
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: TelaLogin(),
@@ -28,7 +31,8 @@ class TelaLogin extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
+          // decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
+          color: Color.fromARGB(255, 63, 126, 134),
           child: const Padding(
             padding: EdgeInsets.all(40),
             child: Acesso(),
@@ -47,54 +51,17 @@ class Acesso extends StatefulWidget {
 }
 
 class _AcessoState extends State<Acesso> {
-  TextEditingController usuarioController = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
+  final Login _storeLogin = Login();
 
-  bool validarCampos(String senha, String usuario) {
-    if (usuario.isEmpty || senha.isEmpty) {
-      alerta("Por favor, preencha ambos os campos de Usuário e Senha.");
-      return false;
-    }
-    if (senha.length < 2) {
-      alerta("A Senha deve ter pelo menos dois caracteres.");
-      return false;
-    }
-    if (usuario.endsWith(' ') || senha.endsWith(' ')) {
-      usuario.substring(0, usuario.length - 1);
-      senha.substring(0, senha.length - 1);
-      return true;
-    }
-    if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(senha)) {
-      alerta(
-          "A Senha não pode ter caracteres especiai, isso inclui 'espaços'.");
-      return false;
-    }
-    // if (usuario.length > 20 || senha.length > 20) {
-    //   alerta("Os campos não podem ter mais de 20 caracteres.");
-    // }
+  final TextEditingController _controllerUsuario = TextEditingController();
+  final TextEditingController _controllerSenha = TextEditingController();
 
-    return true;
-  }
-
-  void alerta(String mensagem) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: const Color.fromARGB(255, 134, 35, 28),
-        content: Text(
-          mensagem,
-          style: const TextStyle(color: Colors.white),
-        ),
-        duration: const Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'Fechar',
-          textColor: Colors.white,
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        ),
-      ),
-    );
-  }
+  // @override
+  // void dispose() {
+  //   _controllerUsuario.dispose();
+  //   _controllerSenha.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +81,9 @@ class _AcessoState extends State<Acesso> {
               ),
             ),
             TextField(
-              controller: usuarioController,
               maxLength: 20,
+              controller: _controllerUsuario,
+              onChanged: _storeLogin.setUsuario,
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                 counterText: '',
@@ -140,7 +108,8 @@ class _AcessoState extends State<Acesso> {
                     fontWeight: FontWeight.w100,
                     fontSize: 18)),
             TextField(
-              controller: senhaController,
+              controller: _controllerSenha,
+              onChanged: _storeLogin.setSenha,
               maxLength: 20,
               cursorColor: Colors.black,
               decoration: const InputDecoration(
@@ -157,26 +126,39 @@ class _AcessoState extends State<Acesso> {
         const SizedBox(
           height: 20,
         ),
-        TextButton(
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Color.fromARGB(255, 32, 36, 33)),
-            ),
-            onPressed: () {
-              if (validarCampos(senhaController.text, usuarioController.text)) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TelaInfor()),
-                );
-              }
-            },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
-                'ENTRAR',
-                style: TextStyle(color: Colors.white),
+        Observer(builder: (_) {
+          return TextButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromARGB(255, 32, 36, 33)),
+                // backgroundColor:
+                //     MaterialStateProperty.all(Color.fromARGB(255, 68, 189, 110)),
               ),
-            )),
+              onPressed: () {
+                _storeLogin.removendoEspaco();
+                _storeLogin.login();
+                // if (_storeLogin.isFormValid) {
+                //   Navigator.push(context,
+                //       MaterialPageRoute(builder: (context) => const TelaInfor()));
+                //   _controllerUsuario.clear();
+                //   _controllerSenha.clear();
+                // } else {
+                //   _storeLogin.mensagemTela(context);
+                // }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: _storeLogin.carregando
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 1,
+                      )
+                    : const Text(
+                        'ENTRAR',
+                        style: TextStyle(color: Colors.white),
+                      ),
+              ));
+        }),
         const SizedBox(
           height: 200,
         ),

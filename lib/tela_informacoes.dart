@@ -18,7 +18,9 @@ class _TelaInforState extends State<TelaInfor> {
         body: SingleChildScrollView(
       child: Container(
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
+        // decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
+        color: Color.fromARGB(255, 63, 126, 134),
+
         child: const Padding(
           padding: EdgeInsets.all(40),
           child: CapturInforma(),
@@ -44,11 +46,10 @@ class _CapturInformaState extends State<CapturInforma> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Card(
-          child: Container( 
+          child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius:BorderRadius.circular(50) ),
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.4,
             child: SingleChildScrollView(child: Observer(

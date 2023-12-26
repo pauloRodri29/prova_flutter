@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:http/http.dart' as http;
 import 'package:prova_flutter/componentes/alerta.dart';
 part 'login.g.dart';
 
@@ -25,6 +27,9 @@ abstract class _Login with Store {
   @observable
   bool carregando = false;
 
+  @observable
+  bool logado = false;
+
   @action
   void setUsuario(String textUser) => usuario = textUser;
 
@@ -47,6 +52,8 @@ abstract class _Login with Store {
       alerta(context, 'Campos Vazios');
     } else if (!senhaValida) {
       alerta(context, 'Senha Inválida');
+    } else {
+      alerta(context, 'Credenciais Inválidas');
     }
   }
 
@@ -59,9 +66,26 @@ abstract class _Login with Store {
   @action
   Future<void> login() async {
     carregando = true;
-    print(carregando);
-    await Future.delayed(const Duration(seconds: 1));
-    carregando = false;
+    try {
+      final response = await http.get(
+        Uri.parse('https://6586e495468ef171392eee97.mockapi.io/user'),
+      );
+
+      if (response.statusCode == 200) {
+        final usuarios = jsonDecode(response.body) as List;
+        for (final user in usuarios) {
+          if (user['name'] == usuario && user['senha'] == senha) {
+            logado = true;
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      logado = false;
+    } finally {
+      await Future.delayed(const Duration(seconds: 2));
+      carregando = false;
+    }
   }
 
   @computed

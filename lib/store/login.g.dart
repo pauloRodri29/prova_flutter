@@ -74,6 +74,21 @@ mixin _$Login on _Login, Store {
     });
   }
 
+  late final _$logadoAtom = Atom(name: '_Login.logado', context: context);
+
+  @override
+  bool get logado {
+    _$logadoAtom.reportRead();
+    return super.logado;
+  }
+
+  @override
+  set logado(bool value) {
+    _$logadoAtom.reportWrite(value, super.logado, () {
+      super.logado = value;
+    });
+  }
+
   late final _$loginAsyncAction = AsyncAction('_Login.login', context: context);
 
   @override
@@ -134,6 +149,7 @@ mixin _$Login on _Login, Store {
 usuario: ${usuario},
 senha: ${senha},
 carregando: ${carregando},
+logado: ${logado},
 camposVazios: ${camposVazios},
 senhaValida: ${senhaValida},
 isFormValid: ${isFormValid}

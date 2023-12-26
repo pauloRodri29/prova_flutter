@@ -52,8 +52,8 @@ class Acesso extends StatefulWidget {
 class _AcessoState extends State<Acesso> {
   final Login _storeLogin = Login();
 
-  final TextEditingController _controllerUsuario = TextEditingController();
-  final TextEditingController _controllerSenha = TextEditingController();
+  // final TextEditingController _controllerUsuario = TextEditingController();
+  // final TextEditingController _controllerSenha = TextEditingController();
 
   // @override
   // void dispose() {
@@ -81,7 +81,7 @@ class _AcessoState extends State<Acesso> {
             ),
             TextField(
               maxLength: 20,
-              controller: _controllerUsuario,
+              // controller: _controllerUsuario,
               onChanged: _storeLogin.setUsuario,
               cursorColor: Colors.black,
               decoration: const InputDecoration(
@@ -107,7 +107,7 @@ class _AcessoState extends State<Acesso> {
                     fontWeight: FontWeight.w100,
                     fontSize: 18)),
             TextField(
-              controller: _controllerSenha,
+              // controller: _controllerSenha,
               onChanged: _storeLogin.setSenha,
               maxLength: 20,
               cursorColor: Colors.black,
@@ -131,16 +131,16 @@ class _AcessoState extends State<Acesso> {
                 backgroundColor: MaterialStateProperty.all(
                     const Color.fromARGB(255, 68, 189, 110)),
               ),
-              onPressed: () {
+              onPressed: () async {
+                await _storeLogin.login();
                 _storeLogin.removendoEspaco();
-                _storeLogin.login();
-                if (_storeLogin.isFormValid) {
+                if (_storeLogin.isFormValid && _storeLogin.logado) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const TelaInfor()));
-                  _controllerUsuario.clear();
-                  _controllerSenha.clear();
+                  // _controllerUsuario.clear();
+                  // _controllerSenha.clear();
                 } else {
                   _storeLogin.mensagemTela(context);
                 }

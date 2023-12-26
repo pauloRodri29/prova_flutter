@@ -10,11 +10,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  //s
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //7878
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: TelaLogin(),
@@ -31,8 +31,7 @@ class TelaLogin extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
-          // decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
-          color: Color.fromARGB(255, 63, 126, 134),
+          decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
           child: const Padding(
             padding: EdgeInsets.all(40),
             child: Acesso(),
@@ -129,22 +128,22 @@ class _AcessoState extends State<Acesso> {
         Observer(builder: (_) {
           return TextButton(
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromARGB(255, 32, 36, 33)),
-                // backgroundColor:
-                //     MaterialStateProperty.all(Color.fromARGB(255, 68, 189, 110)),
+                backgroundColor: MaterialStateProperty.all(
+                    const Color.fromARGB(255, 68, 189, 110)),
               ),
               onPressed: () {
                 _storeLogin.removendoEspaco();
                 _storeLogin.login();
-                // if (_storeLogin.isFormValid) {
-                //   Navigator.push(context,
-                //       MaterialPageRoute(builder: (context) => const TelaInfor()));
-                //   _controllerUsuario.clear();
-                //   _controllerSenha.clear();
-                // } else {
-                //   _storeLogin.mensagemTela(context);
-                // }
+                if (_storeLogin.isFormValid) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const TelaInfor()));
+                  _controllerUsuario.clear();
+                  _controllerSenha.clear();
+                } else {
+                  _storeLogin.mensagemTela(context);
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),

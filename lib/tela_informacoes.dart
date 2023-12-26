@@ -18,9 +18,7 @@ class _TelaInforState extends State<TelaInfor> {
         body: SingleChildScrollView(
       child: Container(
         height: MediaQuery.of(context).size.height,
-        // decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
-        color: Color.fromARGB(255, 63, 126, 134),
-
+        decoration: BoxDecoration(gradient: CoresPersonalizadas().corFundo),
         child: const Padding(
           padding: EdgeInsets.all(40),
           child: CapturInforma(),
@@ -112,12 +110,10 @@ class _CapturInformaState extends State<CapturInforma> {
             onChanged: _store.setInformacao,
             onSubmitted: _store.isEdit
                 ? (_) {
-                    // print('Editando');
                     _store.editarInformacao();
                     _informacaoController.clear();
                   }
                 : (_) {
-                    // print('Salvando');
                     _store.salvarInformacao();
                     _informacaoController.clear();
                   },

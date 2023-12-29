@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
@@ -71,8 +72,16 @@ abstract class _Login with Store {
         Uri.parse('https://6586e495468ef171392eee97.mockapi.io/user'),
       );
 
+      // headers:
+      // {
+      //   HttpHeaders.authorizationHeader;
+      //   'Basic $usuario:$senha';
+      // }
+
+      print('Response status: ${response.statusCode}');
       if (response.statusCode == 200) {
         final usuarios = jsonDecode(response.body) as List;
+        print('Usuarios: $usuarios');
         for (final user in usuarios) {
           if (user['name'] == usuario && user['senha'] == senha) {
             logado = true;
